@@ -20,7 +20,7 @@ const questions = [
         type: 'input',
         message: 'What is the employee\'s email address?',
         name: 'email'
-    }
+    },
 ];
 
 // function to start asking the user questions
