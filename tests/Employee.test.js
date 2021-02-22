@@ -22,6 +22,21 @@ describe("Employee", () => {
             // Verify that the new object has the correct properties
             expect(employee.email).toEqual("sarah@email");
         });
+
+        it("should return a name when getName() is called", () => {
+            const employee = new Employee("Sarah", "1", "sarah@email");
+
+            // Verify that the new object has the correct properties
+            expect(employee.getName()).toEqual("Sarah");
+        });
+
+        it("should return all employee properties when getRole() is called", () => {
+            const employee = new Employee("Sarah", "1", "sarah@email");
+            const test = "Employee";
+
+            // Verify that the new object has the correct properties
+            expect(employee.getRole()).toEqual(test);
+        });
     });
 });
 

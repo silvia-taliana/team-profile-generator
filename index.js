@@ -30,15 +30,8 @@ const managerQues = [
         type: 'input',
         message: 'What is the manager\'s office number?',
         name: 'officeNumber'
-    },
-    {
-        type: 'list',
-        message: 'Please choose a team member to add or finish building your team',
-        name: 'team',
-        choices: ['Engineer', 'Intern', 'Finished building team']
     }
 ];
-
 
 const engineerQues = [
     {
@@ -60,12 +53,6 @@ const engineerQues = [
         type: 'input',
         message: 'What is the engineer\'s github?',
         name: 'github'
-    },
-    {
-        type: 'list',
-        message: 'Please choose a team member to add or finish building your team',
-        name: 'team',
-        choices: ['Engineer', 'Intern', 'Finished building team']
     }
 ];
 
@@ -89,12 +76,6 @@ const internQues = [
         type: 'input',
         message: 'What school did the intern go to?',
         name: 'school'
-    },
-    {
-        type: 'list',
-        message: 'Please choose a team member to add or finish building your team',
-        name: 'team',
-        choices: ['Engineer', 'Intern', 'Finished building team']
     }
 ];
 
@@ -105,25 +86,50 @@ let intern = [];
 // function to start asking the user questions
 function init() {
     inquirer.prompt(managerQues)
-        .then((answer) => manager.push(answer))
-        .then(() => console.log(manager))
-        .then(() => addEmployee())
+        .then((answer) => {
+            manager.push(answer)
+            console.log(manager)
+            addEmployee()
+        });
 };
 
 function addEmployee() {
-    if (manager[0].team === 'Engineer') {
+    inquirer.prompt(
+        {
+            type: 'list',
+            message: 'Please choose a team member to add or finish building your team',
+            name: 'team',
+            choices: ['Engineer', 'Intern', 'Finished building team']
+        }
+    ).then(answer => {
+        if (answer.team === 'Engineer') {
+            createEngineer();
+        }
+        else if (answer.team === 'Intern') {
+            createIntern();
+        }
+        else {
+            console.log(manager);
+            // writeToFile(answer);
+        };
+    });
+
+    function createEngineer() {
         inquirer.prompt(engineerQues)
-            .then((answer) => engineer.push(answer))
-            .then(() => console.log(engineer))
-    }
-    else if (manager[0].team === 'Intern') {
+            .then((answer) => {
+                engineer.push(answer)
+                console.log(engineer)
+                addEmployee();
+            });
+    };
+
+    function createIntern() {
         inquirer.prompt(internQues)
-            .then((answer) => intern.push(answer))
-            .then(() => console.log(intern))
-    }
-    else {
-        console.log(manager[0].team);
-        // writeToFile(answer);
+            .then((answer) => {
+                intern.push(answer)
+                console.log(intern)
+                addEmployee();
+            });
     }
 };
 
@@ -132,4 +138,4 @@ init();
 
 // function writeToFile() {
 //     console.log(answer);
-// };
+// }
