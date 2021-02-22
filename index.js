@@ -1,5 +1,8 @@
 // retrieving other files
 const Employee = require("./lib/Employee");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 
 // retrieving dependencies 
 const inquirer = require("inquirer");
@@ -20,11 +23,6 @@ const managerQues = [
         type: 'input',
         message: 'What is the manager\'s email address?',
         name: 'email'
-    },
-    {
-        type: 'input',
-        message: 'What is the manager\'s id number?',
-        name: 'id'
     },
     {
         type: 'input',
@@ -79,15 +77,14 @@ const internQues = [
     }
 ];
 
-let manager = [];
-let engineer = [];
-let intern = [];
+let team = [];
 
 // function to start asking the user questions
 function init() {
     inquirer.prompt(managerQues)
         .then((answer) => {
-            manager.push(answer)
+            manager = new Manager(answer.name, answer.id, answer.email, answer.officeNumber)
+            team.push(manager)
             console.log(manager)
             addEmployee()
         });
@@ -109,7 +106,7 @@ function addEmployee() {
             createIntern();
         }
         else {
-            console.log(manager);
+            console.log(team);
             // writeToFile(answer);
         };
     });
@@ -117,7 +114,8 @@ function addEmployee() {
     function createEngineer() {
         inquirer.prompt(engineerQues)
             .then((answer) => {
-                engineer.push(answer)
+                engineer = new Engineer(answer.name, answer.id, answer.email, answer.github)
+                team.push(engineer)
                 console.log(engineer)
                 addEmployee();
             });
@@ -126,7 +124,8 @@ function addEmployee() {
     function createIntern() {
         inquirer.prompt(internQues)
             .then((answer) => {
-                intern.push(answer)
+                intern = new Intern(answer.name, answer.id, answer.email, answer.school)
+                team.push(intern)
                 console.log(intern)
                 addEmployee();
             });
