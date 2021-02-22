@@ -1,0 +1,30 @@
+h1 {
+    height: 110px;
+    background-color: coral;
+    font-size: 50px;
+    font-weight: bold;
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+    font-family: 'Acme', sans-serif;
+}
+
+h5 {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.card {
+    min-width: 300px;
+    min-height: 350px;
+    margin: 5%;
+    display: inline-flex;
+    font-family: 'Acme', sans-serif;
+    border-radius: 10px;
+}
+
+.card-img-top {
+    height: 200px;
+    width: 250px;
+    margin: 25px
+}
