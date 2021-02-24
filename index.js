@@ -2,10 +2,14 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const generateHTML = require('./lib/generateHTML')
 
 // retrieving dependencies 
 const inquirer = require("inquirer");
 const fs = require('fs');
+
+// naming new file that will be generated and placing it in the dist folder
+const fileName = "./dist/index.html";
 
 // list of questions for the user 
 const managerQues = [
@@ -86,9 +90,9 @@ function init() {
         .then((answer) => {
             manager = new Manager(answer.name, answer.id, answer.email, answer.officeNumber)
             team.push(manager)
-            console.log(manager)
             addEmployee()
-        });
+        })
+        .catch((err) => console.error(err));
 };
 
 // function to add engineer or intern or finish adding team members
@@ -108,8 +112,7 @@ function addEmployee() {
             createIntern();
         }
         else {
-            // console.log(team);
-            writeToFile(team);
+            writeToFile(fileName, generateHTML(team));
         };
     });
 
@@ -121,7 +124,6 @@ function addEmployee() {
             .then((answer) => {
                 engineer = new Engineer(answer.name, answer.id, answer.email, answer.github)
                 team.push(engineer)
-                console.log(engineer)
                 addEmployee();
             });
     };
@@ -134,75 +136,17 @@ function addEmployee() {
             .then((answer) => {
                 intern = new Intern(answer.name, answer.id, answer.email, answer.school)
                 team.push(intern)
-                console.log(intern)
                 addEmployee();
             });
     };
 };
 
+function writeToFile(fileName, team) {
+
+    fs.writeFile(fileName, team, (err) =>
+        err ? console.error(err) : console.log('Success!')
+    );
+};
+
 // Initialize app
 init();
-
-function writeToFile(team) {
-    console.log(team);
-    for (i = 1; i < team.length; i++) {
-        if (team[i] === "Engineer") {
-            renderEngineer();
-        }
-        else if (team[i] === "Intern") {
-            renderIntern();
-        }
-        else {
-            buildFile();
-        };
-    };
-
-    function buildFile() {
-        console.log("completed!");
-    };
-};
-
-function renderEngineer(engineer) {
-    let engineerTemplate = `
-    <div class="card">
-            <img src="./assets/engineer.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">${engineer.name}</h5>
-                <h5>Engineer</h5>
-                <p class="card-text">
-                    <li>
-                        Id number: ${engineer.id}
-                    </li>
-                    <li>
-                        Email:${engineer.email}
-                    </li>
-                    <li>
-                        Github: ${engineer.github}
-                    </li>
-                </p>
-            </div>
-        </div>`
-    return engineerTemplate;
-};
-
-function renderIntern(intern) {
-    let internTemplate = `        <div class="card">
-    <img src="./assets/intern.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">${intern.name}</h5>
-        <h5>Intern</h5>
-        <p class="card-text">
-            <li>
-                Id number: ${intern.id}
-            </li>
-            <li>
-                Email: ${intern.email}
-            </li>
-            <li>
-                School: ${intern.school}
-            </li>
-        </p>
-    </div>
-</div>`
-    return internTemplate;
-};
